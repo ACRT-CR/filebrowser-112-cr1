@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"net/url"
 	"os"
@@ -73,9 +74,9 @@ func resourceDeleteHandler(fileCache FileCache) handleFunc {
 			return errToStatus(err), err
 		}
 
-		err = d.store.Share.DeleteWithPathPrefix(file.Path)
+		err = d.store.Share.DeleteWithPathPrefix(file.Path, d.user.ID)
 		if err != nil {
-			fmt.Println("Warning: Error(s) occurred while deleting associated shares with file:" + err.Error())
+			log.Printf("WARNING: Error(s) occurred while deleting associated shares with file: %s", err)
 		}
 
 		// delete thumbnails
